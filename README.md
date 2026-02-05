@@ -1,125 +1,141 @@
-🚀 End-to-End Data Engineering Pipeline using AWS & Databricks
+Serverless Data Pipeline for CSV Processing on AWS
 📌 Project Overview
 
-This project demonstrates an end-to-end data engineering pipeline built using AWS and Databricks, following the Medallion Architecture (Bronze, Silver, Gold).
-The objective is to ingest raw data, clean and transform it using PySpark and Spark SQL, apply data quality checks, and produce analytics-ready datasets for downstream reporting and analysis.
+This project implements a fully automated, serverless data pipeline on AWS to ingest, clean, transform, and visualize CSV data.
+The pipeline uses event-driven architecture to process files with minimal manual intervention and produces interactive dashboards for analysis.
 
-This project is designed to simulate a real-world data engineering workflow suitable for Junior / Associate Data Engineer roles.
+The solution is designed to reflect real-world data engineering workflows, focusing on scalability, automation, and cloud-native best practices.
+
 
 🏗️ Architecture Overview
 
-The pipeline is structured using the Medallion Architecture:
+The pipeline follows a multi-stage architecture:
 
-Bronze Layer (Raw Data)
+Raw CSV files are uploaded to an Amazon S3 (Raw Bucket)
 
-Stores ingested raw data in its original format.
+S3 event notifications trigger an AWS Lambda function
 
-Acts as a source of truth for reprocessing and audits.
+Lambda preprocesses and cleans the CSV data
 
-Silver Layer (Cleaned & Transformed Data)
+Cleaned data is stored in an S3 Processed Bucket
 
-Applies data cleaning, deduplication, null handling, and schema standardization.
+AWS Glue Crawler detects schema and updates the Glue Data Catalog
 
-Implements business-level transformations using PySpark and Spark SQL.
+AWS Glue ETL Job transforms data and writes curated output
 
-Gold Layer (Analytics-Ready Data)
+Final data is stored in an S3 Final Bucket
 
-Contains aggregated and curated datasets optimized for analytics and reporting.
+Amazon QuickSight visualizes the final dataset using dashboards
 
-Designed for easy consumption by BI tools and analysts.
 
-🛠️ Tech Stack
+🔧 Services Used
 
-Cloud Platform: AWS
+Amazon S3 – Storage for raw, processed, and final datasets
 
-Data Processing: Databricks, Apache Spark
+AWS Lambda – Serverless preprocessing of CSV files
 
-Languages: PySpark, Spark SQL, Python
+AWS Glue – Schema discovery, ETL, and Data Catalog
 
-Data Storage: Cloud object storage (S3-compatible)
+Amazon QuickSight – Data visualization and dashboarding
 
-Orchestration: Databricks Jobs / Workflows
+AWS IAM – Secure role-based access control
 
-Version Control: Git, GitHub
 
-🔄 Data Pipeline Flow
+⚙️ Project Workflow
+Step 1: Data Ingestion
 
-Data Ingestion
+CSV files are uploaded to a designated folder in the raw S3 bucket
 
-Raw data is ingested into the Bronze layer without modification.
+S3 triggers a Lambda function automatically on file upload
 
-Data Transformation
+Step 2: Data Preprocessing (Lambda)
 
-Data is cleaned and transformed in the Silver layer using PySpark and Spark SQL.
+Reads CSV files from S3
 
-Data Quality Checks
+Removes rows with missing values
 
-Null value handling
+Writes cleaned data to the processed S3 bucket
 
-Duplicate record checks
+Step 3: Data Transformation (AWS Glue)
 
-Schema validation
+Glue Crawler scans processed data and infers schema
 
-Record count reconciliation between layers
+Metadata is stored in the Glue Data Catalog
 
-Data Aggregation
+Glue ETL job performs transformations and loads curated data into the final S3 bucket
 
-Business-level aggregations are created in the Gold layer for analytics use cases.
+Step 4: Data Visualization (QuickSight)
 
-Pipeline Orchestration
+QuickSight connects to the final S3 dataset using a manifest file
 
-The pipeline execution is automated using Databricks jobs with ordered task execution.
+Interactive dashboards are created for insights and analysis
 
-✅ Data Quality Measures
-
-To ensure data reliability and integrity, the following checks are implemented:
-
-Null value validation
-
-Duplicate detection and removal
-
-Schema consistency checks
-
-Basic reconciliation between source and target datasets
 
 🔐 Security & Access Management
 
-Cloud access and permissions were preconfigured in the execution environment.
+IAM roles configured for Lambda, Glue, and QuickSight
 
-The project focuses on data pipeline development.
+Services follow least-privilege access principles
 
-The author has working knowledge of AWS IAM concepts such as roles, policies, and least-privilege access.
+Secure service-to-service communication enabled via IAM policies
 
-🎯 Use Case
 
-The final Gold-layer datasets are designed to support:
+🧠 Key Concepts Demonstrated
 
-Business reporting
+Serverless architecture
 
-Analytical queries
+Event-driven data pipelines
 
-Dashboarding and downstream data consumption
+ETL (Extract, Transform, Load)
 
-📈 Key Learnings
+Data cataloging and schema inference
 
-Building scalable data pipelines using Spark and cloud services
+Cloud-based data visualization
 
-Applying medallion architecture in real-world scenarios
 
-Writing efficient PySpark and Spark SQL transformations
+🚀 How to Run This Project
 
-Implementing basic data quality checks
+Create three S3 buckets:
 
-Understanding workflow orchestration in data engineering
+raw-data
 
-🔮 Future Enhancements
+processed-data
 
-Add IAM role-based access configuration
+final-data
 
-Introduce logging and monitoring
+Configure IAM roles for Lambda and Glue
 
-Implement CI/CD for pipeline deployment
+Deploy the Lambda function and attach S3 triggers
 
-Optimize performance using partitioning and caching
+Upload CSV files to the raw bucket
 
-Extend pipeline for streaming data ingestion
+Run Glue Crawler and ETL job
+
+Connect Amazon QuickSight to the final dataset
+
+Build dashboards and analyze insights
+
+
+📈 Output
+
+Automated CSV data processing
+
+Cleaned and transformed datasets
+
+Interactive dashboards in Amazon QuickSight
+
+
+🧩 Future Enhancements
+
+Add Amazon Athena for SQL-based querying
+
+Implement data quality checks
+
+Add workflow orchestration using AWS Step Functions
+
+Store transformed data in Parquet format for better performance
+
+
+📚 Learning Outcome
+
+This project strengthened my understanding of AWS data engineering services, serverless pipelines, and real-world ETL workflows used in production data platforms.
